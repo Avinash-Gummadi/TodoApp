@@ -9,7 +9,7 @@ import { styles } from './styles'
 const EditReminderModal = ({ open, reminder, handleCancel, handleEdit }) => {
   const [newReminder, setNewReminder] = useState(reminder)
 
-  const { time, setTime, handleChangeTime } = useDateTimePicker()
+  const { time, setTime, handleChangeTime, showTime, setShowTime} = useDateTimePicker()
 
   const handleChangeTitle = value => setNewReminder({ ...newReminder, title: value })
   const handleChangeDesc = value => setNewReminder({ ...newReminder, description: value })
@@ -47,15 +47,15 @@ const EditReminderModal = ({ open, reminder, handleCancel, handleEdit }) => {
 
         <View style={styles.modalFormGroup}>
           <Text style={styles.modalFormLabel}>Time</Text>
-          <DateTimePicker
-            value={time}
+          <Text style={styles.modalFormInput} onPress={() => setShowTime(true)}>{newReminder?.time?.toLocaleString()}</Text>
+          {showTime && <DateTimePicker
+            value={newReminder?new Date(newReminder.time):time}
             mode="time"
-            is24Hour={true}
+            is24Hour={false}
             onChange={handleChangeTime}
-            display="spinner"
             style={styles.timePicker}
             textColor={colors.text}
-          />
+          />}
         </View>
 
         <View style={styles.modalFormActions}>

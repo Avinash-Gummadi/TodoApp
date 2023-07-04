@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Alert, View } from 'react-native'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -29,11 +29,19 @@ const RemindersScreen = () => {
   const [addModalVisible, setAddModalVisible] = useState(false)
   const [editModalVisible, setEditModalVisible] = useState(false)
 
-  const { time, handleChangeTime } = useDateTimePicker()
+  const { time, setTime, handleChangeTime, showTime, setShowTime } = useDateTimePicker()
+  
+  useEffect(() => {
+    addModalVisible && setTime(new Date())
+  }, [addModalVisible])
 
   const handleChangeTitle = value => setReminder({ ...reminder, title: value })
   const handleChangeDesc = value => setReminder({ ...reminder, description: value })
 
+  const handleShowTime = () => {
+    setShowTime(true)
+  }
+  
   const handleCancelAdd = () => {
     setAddModalVisible(false)
     setReminder({
@@ -49,6 +57,7 @@ const RemindersScreen = () => {
   }
 
   const handleAddReminder = () => {
+    console.log(`${time}`);
     if (reminder.title === '' || reminder.description === '') {
       Alert.alert('Please fill all fields', 'Title, description and time are required to create a reminder', [
         { text: 'OK', style: 'destructive' }
@@ -106,6 +115,8 @@ const RemindersScreen = () => {
         open={addModalVisible}
         reminder={reminder}
         time={time}
+        showTime={showTime}
+        handleShowTime={handleShowTime}
         handleChangeTitle={handleChangeTitle}
         handleChangeDesc={handleChangeDesc}
         handleChangeTime={handleChangeTime}

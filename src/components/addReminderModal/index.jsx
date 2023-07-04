@@ -9,6 +9,8 @@ const AddReminderModal = ({
   open,
   reminder,
   time,
+  showTime,
+  handleShowTime,
   handleChangeTitle,
   handleChangeDesc,
   handleChangeTime,
@@ -32,15 +34,16 @@ const AddReminderModal = ({
 
         <View style={styles.modalFormGroup}>
           <Text style={styles.modalFormLabel}>Time</Text>
-          <DateTimePicker
+          <Text style={styles.modalFormInput} onPress={handleShowTime}>{time?.toLocaleString()}</Text>
+          <Text style={styles.modalFormLabel}>{!showTime ? 'Click to select time' : 'Click to change time'}</Text>
+          {showTime && <DateTimePicker
             value={time}
             mode="time"
-            is24Hour={true}
+            is24Hour={false}
             onChange={handleChangeTime}
-            display="spinner"
             style={styles.timePicker}
             textColor={colors.text}
-          />
+          />}
         </View>
 
         <View style={styles.modalFormActions}>
